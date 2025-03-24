@@ -1,0 +1,281 @@
+---
+title: "Formulae"
+date: "Version: 2025-03-16"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Formulae}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+We report all the formulae used in the main computations that take place in the package as a reference for the users and developers.
+
+# Basic model for the HP filter with jumps
+
+The basic model is based on the state-space representation
+$$
+\begin{aligned}
+  y_t &= \alpha^{(1)}_t + \varepsilon_t, \qquad &\varepsilon_t \sim NID(0, \sigma^2_{\varepsilon}) \\
+  \alpha^{(1)}_{t+1} &= \alpha^{(1)}_{t} + \alpha^{(2)}_{t} + \eta_{t}, \qquad &\eta_t \sim NID(0, \sigma^2_{\eta, t}) \\
+  \alpha^{(2)}_{t+1} &= \alpha^{(2)}_{t} + \zeta_{t}, \qquad &\zeta_t \sim NID(0, \sigma^2_{\zeta,t})
+\end{aligned}
+$$
+with initial conditions
+$$
+  \begin{bmatrix}
+    \alpha^{(1)}_1 \\
+    \alpha^{(2)}_1
+  \end{bmatrix}
+  \sim N\left(
+    \begin{bmatrix}
+      a^{(1)}_1 \\
+      a^{(2)}_1
+    \end{bmatrix},
+    \begin{bmatrix}
+      p^{(11)}_1 & p^{(12)}_1\\
+      p^{(12)}_1 & p^{(22)}_1
+    \end{bmatrix}      
+  \right).
+$$
+
+## Scalar Kalman filtering recursions
+
+The Kalman filtering recursions, written in scalar form (to gain computational speed and insights) are the following (for generality we let also the variance of the measurement error vary over time).
+
+The initial innovation, its variance and the Kalman gains are:
+$$
+\begin{aligned}
+i_1 &= y_1 - a^{(1)}_1 \\
+f_1 &= p^{(11)}_1 + \sigma^2_{\varepsilon,1} \\
+k^{(1)}_1 &= \left(p^{(11)}_1 + p^{(12)}_1\right) / f_1 \\
+k^{(2)}_1 &= p^{(12)}_1 / f_1
+\end{aligned}
+$$
+For $t=1, 2, \ldots, n-1$ the recursions are
+$$
+\begin{aligned}
+a^{(1)}_{t+1} &= a^{(1)}_{t} + a^{(2)}_{t} + k^{(1)}_t i_t \\
+a^{(2)}_{t+1} &= a^{(2)}_{t} + k^{(2)}_t i_t \\
+\\
+p^{(11)}_{t+1} &= p^{(11)}_t + 2 p^{(12)}_t + p^{(22)}_t + \sigma^2_{\eta,t} - k^{(1)}_t k^{(1)}_t f_t \\
+p^{(12)}_{t+1} &= p^{(12)}_t + p^{(22)}_t - k^{(1)}_t k^{(2)}_t f_t\\
+p^{(22)}_{t+1} &= p^{(22)}_t + \sigma^2_{\zeta,t} - k^{(2)}_t k^{(2)}_t f_t\\
+\\
+i_{t+1} &= y_{t+1} - a^{(1)}_{t+1} \\
+f_{t+1} &= p^{11}_{t+1} + \sigma^2_{\varepsilon,t+1} \\
+k^{(1)}_{t+1} &= \left(p^{(11)}_{t+1} + p^{(12)}_{t+1}\right) / f_{t+1} \\
+k^{(2)}_{t+1} &= p^{(12)}_{t+1} / f_{t+1}
+\end{aligned}
+$$
+
+## Modifications when missing observations are present
+
+When one or more values of $y_t$ are missing, then the only modifications to the above recursions are the following.
+$$
+\begin{aligned}
+i_{t+1} &= 0 \\
+f_{t+1} &= \infty \\
+k^{(1)}_{t+1} &= 0 \\
+k^{(1)}_{t+1} &= 0
+\end{aligned}.
+$$
+
+## Diffuse initial conditions
+
+Since the two state variables are nonstationary, their initialization should be diffuse:
+$$
+  \begin{bmatrix}
+    \alpha^{(1)}_1 \\
+    \alpha^{(2)}_1
+  \end{bmatrix}
+  \sim N\left(
+    \begin{bmatrix}
+      0 \\
+      0
+    \end{bmatrix},
+    \begin{bmatrix}
+      v & 0\\
+      0 & v
+    \end{bmatrix}      
+  \right),
+$$
+with $v \rightarrow\infty$.
+
+As it will be clear from the computations below, when $v$ is infinite, the mean squared errors of $a^{(1)}_t$ and $a^{(2)}_t$, and the variances of the innovations are infinite for $t=1, 2$, while from $t=3$ on they are finite. 
+
+Let us carry out the computations for $t=1, 2, 3$ and then take the limit for $v \rightarrow\infty$.
+
+### $t=1$
+$$
+\begin{aligned}
+a_1^{(1)}  &= 0 \\
+a_1^{(2)}  &= 0 \\
+p_1^{(11)} &= v \\
+p_1^{(12)} &= 0 \\
+p_1^{(22)} &= v \\
+i_1        &= y_1 \\
+f_1        &= v + \sigma^2_{\varepsilon, 1} \\
+k_1^{(1)}  &= v/(v + \sigma^2_{\varepsilon, 1}) \\
+k_1^{(2)}  &= 0
+\end{aligned}
+$$
+
+### $t=2$
+$$
+\begin{aligned}
+a_2^{(1)}  &= y_1 \\
+a_2^{(2)}  &= 0 \\
+p_2^{(11)} &= 2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon, 1}} \\
+p_2^{(12)} &= v \\
+p_2^{(22)} &= v + \sigma^2_{\zeta,1} \\
+i_2        &= y_2 - \frac{v}{v + \sigma^2_\varepsilon}y_1 \rightarrow y_2 - y_1 \\
+f_2        &= 2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_\varepsilon} + \sigma^2_{\varepsilon, 2} \\
+k_2^{(1)}  &= \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow 2 \\
+k_2^{(2)}  &= \frac{v}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow 1
+\end{aligned}
+$$
+
+### $t=3$
+$$
+\begin{aligned}
+a_3^{(1)}  &= \frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1 +
+  \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}\left(y_2 - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1\right)
+  \rightarrow 2y_2 - y_1\\
+a_3^{(2)}  &= \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}\left(y_2 - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1\right)
+  \rightarrow y_2 - y_1 \\
+p_3^{(11)} &= 5v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\zeta,1} + \sigma^2_{\eta,2}
+  - \frac{\left(3v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}\right)^2}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}
+\rightarrow \sigma^2_{\eta,1} + \sigma^2_{\eta,2} + \sigma^2_{\zeta,1} \\
+p_3^{(12)} &= 2v + \sigma^2_{\zeta,1} - \frac{v\left(3v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}\right)}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow \sigma^2_{\zeta,1}\\
+p_3^{(22)} &= v + \sigma^2_{\zeta,1} + \sigma^2_{\zeta,2} - \frac{v^2}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow \sigma^2_{\zeta,1} + \sigma^2_{\zeta,2}\\
+i_3        &\rightarrow y_3 - 2y_2 + y_1 \\
+f_3        &\rightarrow \sigma^2_{\eta,1} + \sigma^2_{\eta,2} + \sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3} \\
+k_3^{(1)}  &\rightarrow  \frac{\sigma^2_{\eta,1} + \sigma^2_{\eta,2} + 2\sigma^2_{\zeta,1}}{\sigma^2_{\eta,1} + \sigma^2_{\eta,2} + \sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3}}\\
+k_3^{(2)}  &\rightarrow \frac{\sigma^2_{\zeta,1}}{\sigma^2_{\eta,1} + \sigma^2_{\eta,2} + \sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3}}
+\end{aligned}
+$$
+
+## Smoothing
+
+The smoothing recursions start from $t=n$ and work backwards down to $t=1$. The following quantities are auxiliar to compute the smoothed values of $\alpha^{(1)}_t$ and their MSE.
+$$
+\begin{aligned}
+   r^{(1)}_{n+1} &= 0 \\
+   r^{(2)}_{n+1} &= 0 \\
+   n^{(11)}_{n+1} &= 0 \\
+   n^{(12)}_{n+1} &= 0 \\
+   n^{(22)}_{n+1} &= 0 \\
+   e_{n} &= i_{n}/f_{n} \\
+   d_{n} &= 1/f_{n} \\
+\end{aligned}
+$$
+For $t=n, n-1, \ldots, 1$, compute
+$$
+\begin{aligned}
+     r^{\left(1\right)}_t &= i_t/f_t + \left(1 - k^{\left(1\right)}_t\right) r^{\left(1\right)}_{t+1} -
+                 k^{\left(2\right)}_t r^{\left(2\right)}_{t+1} \\
+     r^{\left(2\right)}_t &= r^{\left(1\right)}_{t+1} + r^{\left(2\right)}_{t+1} \\
+     n^{\left(11\right)}_t &= \left(1-k^{\left(1\right)}_t\right)^2 n^{\left(11\right)}_{t+1} -
+              2\left(1-k^{\left(1\right)}_t\right) k^{\left(2\right)}_t n^{\left(12\right)}_{t+1} +
+              k^{\left(2\right)}_t k^{\left(2\right)}_t n^{\left(22\right)}_{t+1} + 1/f_t \\
+     n^{\left(12\right)}_t &= \left(1-k^{\left(1\right)}_t\right) \left(n^{\left(11\right)}_{t+1} + n^{\left(12\right)}_{t+1}\right) -
+               k^{\left(2\right)}_t \left(n^{\left(12\right)}_{t+1} + n^{\left(22\right)}_{t+1}\right) \\
+     n^{\left(22\right)}_t &= n^{\left(11\right)}_{t+1} + 2 n^{\left(12\right)}_{t+1} + n^{\left(22\right)}_{t+1} \\
+e_{t-1} &= i_{t-1}/f_{t-1} - k^{(1)}_{t-1} r^{(1)}_{t} - k^{(2)}_{t-1} r^{(2)}_t \\
+d_{t-1} &= 1/f_{t-1} + k^{(1)}_{t-1} k^{(1)}_{t-1} n^{(11)}_t +
+       2 k^{(1)}_{t-1} k^{(2)}_{t-1} n^{(12)}_t + k^{(2)}_{t-1} k^{(2)}_{t-1} n^{(22)}_t
+\end{aligned}
+$$
+The smoothed values of $\alpha^{(1)}_t$, that is the Hodrick-Prescott filtered time series, and their mean squared errors are given by
+$$
+\begin{aligned}
+a^{(1)}_{t|n} &= a^{(1)}_t + p^{(11)}_t r^{(1)}_t + p^{(12)}_t r^{(2)}_t \\
+p^{(11)}_{t|n} &= p^{(11)}_t - p^{(11)}_t p^{(11)}_t n^{(11)}_t -
+                  2 p^{(11)}_t p^{(12)}_t n^{(12)}_t - p^{(12)}_t p^{(12)}_t n^{(22)}_t
+\end{aligned}
+$$
+
+## Weights for computing the effective degrees of freedom
+
+Since the smoother is linear in the observations, the vector of smoothed $\alpha^{(1)}_t$, say $\mathbf{s}$, is just a linear transformation of the vector of observations, $\mathbf{y}$:
+$$
+  \mathbf{s} = \mathbf{W} \mathbf{y}.
+$$
+The number of effective degrees of freedom is the trace of the weighting matrix $\mathbf{W}$ (cf.\ Hastie, Tibshirani and Friedman, 2009, *The Elements of Statistical Learning*, Section 5.4.1). The formulae for computing such weights in a general state-space form can be found in Koopman and Harvey (2003) *Journal of Economic Dynamics and Control*, vol.\ 27. In our framework, the diagonal elements of the matrix $\mathbf{W}$ are given by
+$$
+\begin{aligned}
+  w_{tt} &= p^{(11)}_t \left(1/f_t + k^{(1)}_t k^{(1)}_t n^{(11)}_t +
+           2 k^{(1)}_t k^{(2)}_t n^{(12)}_t +
+           k^{(2)}_t k^{(2)}_t n^{(22)}_t - k^{(1)}_t n^{(11)}_t -
+           k^{(2)}_t n^{(12)}_t\right) \\
+           &\;\;\;\; - p^{(12)}_t \left(k^{(1)}_t (n^{(11)}_t + n^{(12)}_t) +
+           k^{(2)}_t (n^{(12)}_t + n^{(22)}_t)\right)
+\end{aligned}
+$$
+
+## Analytical scores
+
+The log-likelihood must be maximised with respect to a very large number of parameters ($n+3$). Thus, providing the numerical optimiser with analytical scores is important for stability and speed.
+Since all of our parameters are related to quantities in the disturbance covariance matrices, we can adapt the results in Koopman and Shephard (1992, Biometrika vol. 79).
+
+Recall that our (slightly re-parametrised) model is
+$$
+\begin{aligned}
+    y_t &= \alpha^{(1)}_t + \varepsilon_t,
+    &\varepsilon_t \sim NID (0, \sigma_\varepsilon^2) \\
+    \alpha^{(1)}_{t+1} &= \alpha^{(1)}_t + \alpha^{(2)}_t + \eta_t,
+    &\eta_t \sim NID (0, \sigma^2_t) \\
+    \alpha^{(2)}_{t+1} &= \alpha^{(2)}_t + \zeta_t,
+    &\zeta_t \sim NID (0, \sigma^2 + \gamma^2 \sigma^2_t)
+\end{aligned}
+$$
+where the parameters to estimate are $\sigma_\varepsilon$, $\sigma$, $\gamma$, and the sequence $\{\sigma_t\}_{t=1,\ldots,n}$, which are all non-negative. Notice that in this parametrisation $\lambda = \sigma_\varepsilon^2 / \sigma^2$.
+
+### $\lambda$ free
+
+If $\lambda$ is not fixed and $\ell(\boldsymbol{\theta})$ represents the log-likelihood function, with $\boldsymbol\theta$ vector all of the parameters, then
+$$
+\begin{aligned}
+\frac{\partial \ell}{\partial \sigma_\varepsilon} &=
+  \sigma_\varepsilon \sum_{t=1}^n (e_t e_t - d_t)\\
+\frac{\partial \ell}{\partial \sigma} &= \sigma\sum_{t=1}^n (r^{(2)}_t r^{(2)}_t - n^{(22)}_t)\\
+\frac{\partial \ell}{\partial \gamma} &= \gamma\sum_{t=1}^n (r^{(2)}_t r^{(2)}_t - n^{(22)}_t) \sigma^2_t\\
+\frac{\partial \ell}{\partial \sigma_t} &= 
+\Big(r^{(1)}_t r^{(1)}_t - n^{(11)}_t + (r^{(2)}_t r^{(2)}_t - n^{(22)}_t)\gamma^2\Big)\sigma^2_t
+\end{aligned}
+$$
+
+Generally, constrained optimisation problems also need the derivatives of the constraining function, which in our case is $g(\boldsymbol{\theta}) = \sum_{t=1}^n \sigma_t$. The solution to the regularised maximum likelihood problem must satisfy $g(\boldsymbol{\theta}) \leq M$. The derivatives are trivial:
+$$
+\frac{\partial g}{\partial\sigma_\varepsilon} = 0, \;
+\frac{\partial g}{\partial\sigma} = 0, \;
+\frac{\partial g}{\partial\gamma} = 0, \;
+\frac{\partial g}{\partial\sigma_t} = 1.
+$$
+
+### $\lambda$ fixed
+If $\lambda$ is fixed, $\sigma^2_\varepsilon = \lambda\sigma^2$ and, in the log-likelihood function $\ell(\boldsymbol{\theta})$, the vector of parameters $\boldsymbol\theta$ does not contain $\lambda$ or $\sigma^2_\varepsilon$. The derivatives are now
+$$
+\begin{aligned}
+\frac{\partial \ell}{\partial \sigma} &=
+\sigma\sum_{t=1}^n (r^{(2)}_t r^{(2)}_t - n^{(22)}_t) - \sigma\lambda\sum_{t=1}^n (e_t e_t - d_t) \\
+\frac{\partial \ell}{\partial \gamma} &= \gamma\sum_{t=1}^n (r^{(2)}_t r^{(2)}_t - n^{(22)}_t )\sigma_t\\
+\frac{\partial \ell}{\partial \sigma_t} &= 
+\Big(r^{(1)}_t r^{(1)}_t - n^{(11)}_t + (r^{(2)}_t r^{(2)}_t - n^{(22)}_t)\gamma^2\Big)\sigma^2_t
+\end{aligned}
+$$
+The derivatives of the constraining function are
+$$
+\frac{\partial g}{\partial\sigma} = 0, \;
+\frac{\partial g}{\partial\gamma} = 0, \;
+\frac{\partial g}{\partial\sigma_t} = 1.
+$$

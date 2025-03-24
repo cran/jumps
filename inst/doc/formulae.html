@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Formulae</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Formulae</h1>
+<h4 class="date">Version: 2025-03-16</h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>We report all the formulae used in the main computations that take
+place in the package as a reference for the users and developers.</p>
+</div>
+<div id="basic-model-for-the-hp-filter-with-jumps" class="section level1">
+<h1>Basic model for the HP filter with jumps</h1>
+<p>The basic model is based on the state-space representation <span class="math display">\[
+\begin{aligned}
+  y_t &amp;= \alpha^{(1)}_t + \varepsilon_t, \qquad &amp;\varepsilon_t
+\sim NID(0, \sigma^2_{\varepsilon}) \\
+  \alpha^{(1)}_{t+1} &amp;= \alpha^{(1)}_{t} + \alpha^{(2)}_{t} +
+\eta_{t}, \qquad &amp;\eta_t \sim NID(0, \sigma^2_{\eta, t}) \\
+  \alpha^{(2)}_{t+1} &amp;= \alpha^{(2)}_{t} + \zeta_{t}, \qquad
+&amp;\zeta_t \sim NID(0, \sigma^2_{\zeta,t})
+\end{aligned}
+\]</span> with initial conditions <span class="math display">\[
+  \begin{bmatrix}
+    \alpha^{(1)}_1 \\
+    \alpha^{(2)}_1
+  \end{bmatrix}
+  \sim N\left(
+    \begin{bmatrix}
+      a^{(1)}_1 \\
+      a^{(2)}_1
+    \end{bmatrix},
+    \begin{bmatrix}
+      p^{(11)}_1 &amp; p^{(12)}_1\\
+      p^{(12)}_1 &amp; p^{(22)}_1
+    \end{bmatrix}      
+  \right).
+\]</span></p>
+<div id="scalar-kalman-filtering-recursions" class="section level2">
+<h2>Scalar Kalman filtering recursions</h2>
+<p>The Kalman filtering recursions, written in scalar form (to gain
+computational speed and insights) are the following (for generality we
+let also the variance of the measurement error vary over time).</p>
+<p>The initial innovation, its variance and the Kalman gains are: <span class="math display">\[
+\begin{aligned}
+i_1 &amp;= y_1 - a^{(1)}_1 \\
+f_1 &amp;= p^{(11)}_1 + \sigma^2_{\varepsilon,1} \\
+k^{(1)}_1 &amp;= \left(p^{(11)}_1 + p^{(12)}_1\right) / f_1 \\
+k^{(2)}_1 &amp;= p^{(12)}_1 / f_1
+\end{aligned}
+\]</span> For <span class="math inline">\(t=1, 2, \ldots, n-1\)</span>
+the recursions are <span class="math display">\[
+\begin{aligned}
+a^{(1)}_{t+1} &amp;= a^{(1)}_{t} + a^{(2)}_{t} + k^{(1)}_t i_t \\
+a^{(2)}_{t+1} &amp;= a^{(2)}_{t} + k^{(2)}_t i_t \\
+\\
+p^{(11)}_{t+1} &amp;= p^{(11)}_t + 2 p^{(12)}_t + p^{(22)}_t +
+\sigma^2_{\eta,t} - k^{(1)}_t k^{(1)}_t f_t \\
+p^{(12)}_{t+1} &amp;= p^{(12)}_t + p^{(22)}_t - k^{(1)}_t k^{(2)}_t
+f_t\\
+p^{(22)}_{t+1} &amp;= p^{(22)}_t + \sigma^2_{\zeta,t} - k^{(2)}_t
+k^{(2)}_t f_t\\
+\\
+i_{t+1} &amp;= y_{t+1} - a^{(1)}_{t+1} \\
+f_{t+1} &amp;= p^{11}_{t+1} + \sigma^2_{\varepsilon,t+1} \\
+k^{(1)}_{t+1} &amp;= \left(p^{(11)}_{t+1} + p^{(12)}_{t+1}\right) /
+f_{t+1} \\
+k^{(2)}_{t+1} &amp;= p^{(12)}_{t+1} / f_{t+1}
+\end{aligned}
+\]</span></p>
+</div>
+<div id="modifications-when-missing-observations-are-present" class="section level2">
+<h2>Modifications when missing observations are present</h2>
+<p>When one or more values of <span class="math inline">\(y_t\)</span>
+are missing, then the only modifications to the above recursions are the
+following. <span class="math display">\[
+\begin{aligned}
+i_{t+1} &amp;= 0 \\
+f_{t+1} &amp;= \infty \\
+k^{(1)}_{t+1} &amp;= 0 \\
+k^{(1)}_{t+1} &amp;= 0
+\end{aligned}.
+\]</span></p>
+</div>
+<div id="diffuse-initial-conditions" class="section level2">
+<h2>Diffuse initial conditions</h2>
+<p>Since the two state variables are nonstationary, their initialization
+should be diffuse: <span class="math display">\[
+  \begin{bmatrix}
+    \alpha^{(1)}_1 \\
+    \alpha^{(2)}_1
+  \end{bmatrix}
+  \sim N\left(
+    \begin{bmatrix}
+      0 \\
+      0
+    \end{bmatrix},
+    \begin{bmatrix}
+      v &amp; 0\\
+      0 &amp; v
+    \end{bmatrix}      
+  \right),
+\]</span> with <span class="math inline">\(v
+\rightarrow\infty\)</span>.</p>
+<p>As it will be clear from the computations below, when <span class="math inline">\(v\)</span> is infinite, the mean squared errors of
+<span class="math inline">\(a^{(1)}_t\)</span> and <span class="math inline">\(a^{(2)}_t\)</span>, and the variances of the
+innovations are infinite for <span class="math inline">\(t=1,
+2\)</span>, while from <span class="math inline">\(t=3\)</span> on they
+are finite.</p>
+<p>Let us carry out the computations for <span class="math inline">\(t=1, 2, 3\)</span> and then take the limit for
+<span class="math inline">\(v \rightarrow\infty\)</span>.</p>
+<div id="t1" class="section level3">
+<h3><span class="math inline">\(t=1\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+a_1^{(1)}  &amp;= 0 \\
+a_1^{(2)}  &amp;= 0 \\
+p_1^{(11)} &amp;= v \\
+p_1^{(12)} &amp;= 0 \\
+p_1^{(22)} &amp;= v \\
+i_1        &amp;= y_1 \\
+f_1        &amp;= v + \sigma^2_{\varepsilon, 1} \\
+k_1^{(1)}  &amp;= v/(v + \sigma^2_{\varepsilon, 1}) \\
+k_1^{(2)}  &amp;= 0
+\end{aligned}
+\]</span></p>
+</div>
+<div id="t2" class="section level3">
+<h3><span class="math inline">\(t=2\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+a_2^{(1)}  &amp;= y_1 \\
+a_2^{(2)}  &amp;= 0 \\
+p_2^{(11)} &amp;= 2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon, 1}} \\
+p_2^{(12)} &amp;= v \\
+p_2^{(22)} &amp;= v + \sigma^2_{\zeta,1} \\
+i_2        &amp;= y_2 - \frac{v}{v + \sigma^2_\varepsilon}y_1
+\rightarrow y_2 - y_1 \\
+f_2        &amp;= 2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_\varepsilon} + \sigma^2_{\varepsilon, 2} \\
+k_2^{(1)}  &amp;= \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow 2 \\
+k_2^{(2)}  &amp;= \frac{v}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow 1
+\end{aligned}
+\]</span></p>
+</div>
+<div id="t3" class="section level3">
+<h3><span class="math inline">\(t=3\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+a_3^{(1)}  &amp;= \frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1 +
+  \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}\left(y_2 -
+\frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1\right)
+  \rightarrow 2y_2 - y_1\\
+a_3^{(2)}  &amp;= \frac{3v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}}}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}\left(y_2 -
+\frac{v^2}{v + \sigma^2_{\varepsilon,1}}y_1\right)
+  \rightarrow y_2 - y_1 \\
+p_3^{(11)} &amp;= 5v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\zeta,1} + \sigma^2_{\eta,2}
+  - \frac{\left(3v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}}\right)^2}{2v + \sigma^2_{\eta,1} -
+\frac{v^2}{v + \sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}}
+\rightarrow \sigma^2_{\eta,1} + \sigma^2_{\eta,2} + \sigma^2_{\zeta,1}
+\\
+p_3^{(12)} &amp;= 2v + \sigma^2_{\zeta,1} - \frac{v\left(3v +
+\sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}}\right)}{2v
++ \sigma^2_{\eta,1} - \frac{v^2}{v + \sigma^2_{\varepsilon,1}} +
+\sigma^2_{\varepsilon,2}} \rightarrow \sigma^2_{\zeta,1}\\
+p_3^{(22)} &amp;= v + \sigma^2_{\zeta,1} + \sigma^2_{\zeta,2} -
+\frac{v^2}{2v + \sigma^2_{\eta,1} - \frac{v^2}{v +
+\sigma^2_{\varepsilon,1}} + \sigma^2_{\varepsilon,2}} \rightarrow
+\sigma^2_{\zeta,1} + \sigma^2_{\zeta,2}\\
+i_3        &amp;\rightarrow y_3 - 2y_2 + y_1 \\
+f_3        &amp;\rightarrow \sigma^2_{\eta,1} + \sigma^2_{\eta,2} +
+\sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3} \\
+k_3^{(1)}  &amp;\rightarrow  \frac{\sigma^2_{\eta,1} + \sigma^2_{\eta,2}
++ 2\sigma^2_{\zeta,1}}{\sigma^2_{\eta,1} + \sigma^2_{\eta,2} +
+\sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3}}\\
+k_3^{(2)}  &amp;\rightarrow \frac{\sigma^2_{\zeta,1}}{\sigma^2_{\eta,1}
++ \sigma^2_{\eta,2} + \sigma^2_{\zeta,1} + \sigma^2_{\varepsilon,3}}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+<div id="smoothing" class="section level2">
+<h2>Smoothing</h2>
+<p>The smoothing recursions start from <span class="math inline">\(t=n\)</span> and work backwards down to <span class="math inline">\(t=1\)</span>. The following quantities are
+auxiliar to compute the smoothed values of <span class="math inline">\(\alpha^{(1)}_t\)</span> and their MSE. <span class="math display">\[
+\begin{aligned}
+   r^{(1)}_{n+1} &amp;= 0 \\
+   r^{(2)}_{n+1} &amp;= 0 \\
+   n^{(11)}_{n+1} &amp;= 0 \\
+   n^{(12)}_{n+1} &amp;= 0 \\
+   n^{(22)}_{n+1} &amp;= 0 \\
+   e_{n} &amp;= i_{n}/f_{n} \\
+   d_{n} &amp;= 1/f_{n} \\
+\end{aligned}
+\]</span> For <span class="math inline">\(t=n, n-1, \ldots, 1\)</span>,
+compute <span class="math display">\[
+\begin{aligned}
+     r^{\left(1\right)}_t &amp;= i_t/f_t + \left(1 -
+k^{\left(1\right)}_t\right) r^{\left(1\right)}_{t+1} -
+                 k^{\left(2\right)}_t r^{\left(2\right)}_{t+1} \\
+     r^{\left(2\right)}_t &amp;= r^{\left(1\right)}_{t+1} +
+r^{\left(2\right)}_{t+1} \\
+     n^{\left(11\right)}_t &amp;= \left(1-k^{\left(1\right)}_t\right)^2
+n^{\left(11\right)}_{t+1} -
+              2\left(1-k^{\left(1\right)}_t\right) k^{\left(2\right)}_t
+n^{\left(12\right)}_{t+1} +
+              k^{\left(2\right)}_t k^{\left(2\right)}_t
+n^{\left(22\right)}_{t+1} + 1/f_t \\
+     n^{\left(12\right)}_t &amp;= \left(1-k^{\left(1\right)}_t\right)
+\left(n^{\left(11\right)}_{t+1} + n^{\left(12\right)}_{t+1}\right) -
+               k^{\left(2\right)}_t \left(n^{\left(12\right)}_{t+1} +
+n^{\left(22\right)}_{t+1}\right) \\
+     n^{\left(22\right)}_t &amp;= n^{\left(11\right)}_{t+1} + 2
+n^{\left(12\right)}_{t+1} + n^{\left(22\right)}_{t+1} \\
+e_{t-1} &amp;= i_{t-1}/f_{t-1} - k^{(1)}_{t-1} r^{(1)}_{t} -
+k^{(2)}_{t-1} r^{(2)}_t \\
+d_{t-1} &amp;= 1/f_{t-1} + k^{(1)}_{t-1} k^{(1)}_{t-1} n^{(11)}_t +
+       2 k^{(1)}_{t-1} k^{(2)}_{t-1} n^{(12)}_t + k^{(2)}_{t-1}
+k^{(2)}_{t-1} n^{(22)}_t
+\end{aligned}
+\]</span> The smoothed values of <span class="math inline">\(\alpha^{(1)}_t\)</span>, that is the
+Hodrick-Prescott filtered time series, and their mean squared errors are
+given by <span class="math display">\[
+\begin{aligned}
+a^{(1)}_{t|n} &amp;= a^{(1)}_t + p^{(11)}_t r^{(1)}_t + p^{(12)}_t
+r^{(2)}_t \\
+p^{(11)}_{t|n} &amp;= p^{(11)}_t - p^{(11)}_t p^{(11)}_t n^{(11)}_t -
+                  2 p^{(11)}_t p^{(12)}_t n^{(12)}_t - p^{(12)}_t
+p^{(12)}_t n^{(22)}_t
+\end{aligned}
+\]</span></p>
+</div>
+<div id="weights-for-computing-the-effective-degrees-of-freedom" class="section level2">
+<h2>Weights for computing the effective degrees of freedom</h2>
+<p>Since the smoother is linear in the observations, the vector of
+smoothed <span class="math inline">\(\alpha^{(1)}_t\)</span>, say <span class="math inline">\(\mathbf{s}\)</span>, is just a linear
+transformation of the vector of observations, <span class="math inline">\(\mathbf{y}\)</span>: <span class="math display">\[
+  \mathbf{s} = \mathbf{W} \mathbf{y}.
+\]</span> The number of effective degrees of freedom is the trace of the
+weighting matrix <span class="math inline">\(\mathbf{W}\)</span>
+(cf. Hastie, Tibshirani and Friedman, 2009, <em>The Elements of
+Statistical Learning</em>, Section 5.4.1). The formulae for computing
+such weights in a general state-space form can be found in Koopman and
+Harvey (2003) <em>Journal of Economic Dynamics and Control</em>,
+vol. 27. In our framework, the diagonal elements of the matrix <span class="math inline">\(\mathbf{W}\)</span> are given by <span class="math display">\[
+\begin{aligned}
+  w_{tt} &amp;= p^{(11)}_t \left(1/f_t + k^{(1)}_t k^{(1)}_t n^{(11)}_t
++
+           2 k^{(1)}_t k^{(2)}_t n^{(12)}_t +
+           k^{(2)}_t k^{(2)}_t n^{(22)}_t - k^{(1)}_t n^{(11)}_t -
+           k^{(2)}_t n^{(12)}_t\right) \\
+           &amp;\;\;\;\; - p^{(12)}_t \left(k^{(1)}_t (n^{(11)}_t +
+n^{(12)}_t) +
+           k^{(2)}_t (n^{(12)}_t + n^{(22)}_t)\right)
+\end{aligned}
+\]</span></p>
+</div>
+<div id="analytical-scores" class="section level2">
+<h2>Analytical scores</h2>
+<p>The log-likelihood must be maximised with respect to a very large
+number of parameters (<span class="math inline">\(n+3\)</span>). Thus,
+providing the numerical optimiser with analytical scores is important
+for stability and speed. Since all of our parameters are related to
+quantities in the disturbance covariance matrices, we can adapt the
+results in Koopman and Shephard (1992, Biometrika vol. 79).</p>
+<p>Recall that our (slightly re-parametrised) model is <span class="math display">\[
+\begin{aligned}
+    y_t &amp;= \alpha^{(1)}_t + \varepsilon_t,
+    &amp;\varepsilon_t \sim NID (0, \sigma_\varepsilon^2) \\
+    \alpha^{(1)}_{t+1} &amp;= \alpha^{(1)}_t + \alpha^{(2)}_t + \eta_t,
+    &amp;\eta_t \sim NID (0, \sigma^2_t) \\
+    \alpha^{(2)}_{t+1} &amp;= \alpha^{(2)}_t + \zeta_t,
+    &amp;\zeta_t \sim NID (0, \sigma^2 + \gamma^2 \sigma^2_t)
+\end{aligned}
+\]</span> where the parameters to estimate are <span class="math inline">\(\sigma_\varepsilon\)</span>, <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\gamma\)</span>, and the sequence <span class="math inline">\(\{\sigma_t\}_{t=1,\ldots,n}\)</span>, which are
+all non-negative. Notice that in this parametrisation <span class="math inline">\(\lambda = \sigma_\varepsilon^2 /
+\sigma^2\)</span>.</p>
+<div id="lambda-free" class="section level3">
+<h3><span class="math inline">\(\lambda\)</span> free</h3>
+<p>If <span class="math inline">\(\lambda\)</span> is not fixed and
+<span class="math inline">\(\ell(\boldsymbol{\theta})\)</span>
+represents the log-likelihood function, with <span class="math inline">\(\boldsymbol\theta\)</span> vector all of the
+parameters, then <span class="math display">\[
+\begin{aligned}
+\frac{\partial \ell}{\partial \sigma_\varepsilon} &amp;=
+  \sigma_\varepsilon \sum_{t=1}^n (e_t e_t - d_t)\\
+\frac{\partial \ell}{\partial \sigma} &amp;= \sigma\sum_{t=1}^n
+(r^{(2)}_t r^{(2)}_t - n^{(22)}_t)\\
+\frac{\partial \ell}{\partial \gamma} &amp;= \gamma\sum_{t=1}^n
+(r^{(2)}_t r^{(2)}_t - n^{(22)}_t) \sigma^2_t\\
+\frac{\partial \ell}{\partial \sigma_t} &amp;=
+\Big(r^{(1)}_t r^{(1)}_t - n^{(11)}_t + (r^{(2)}_t r^{(2)}_t -
+n^{(22)}_t)\gamma^2\Big)\sigma^2_t
+\end{aligned}
+\]</span></p>
+<p>Generally, constrained optimisation problems also need the
+derivatives of the constraining function, which in our case is <span class="math inline">\(g(\boldsymbol{\theta}) = \sum_{t=1}^n
+\sigma_t\)</span>. The solution to the regularised maximum likelihood
+problem must satisfy <span class="math inline">\(g(\boldsymbol{\theta})
+\leq M\)</span>. The derivatives are trivial: <span class="math display">\[
+\frac{\partial g}{\partial\sigma_\varepsilon} = 0, \;
+\frac{\partial g}{\partial\sigma} = 0, \;
+\frac{\partial g}{\partial\gamma} = 0, \;
+\frac{\partial g}{\partial\sigma_t} = 1.
+\]</span></p>
+</div>
+<div id="lambda-fixed" class="section level3">
+<h3><span class="math inline">\(\lambda\)</span> fixed</h3>
+<p>If <span class="math inline">\(\lambda\)</span> is fixed, <span class="math inline">\(\sigma^2_\varepsilon = \lambda\sigma^2\)</span>
+and, in the log-likelihood function <span class="math inline">\(\ell(\boldsymbol{\theta})\)</span>, the vector of
+parameters <span class="math inline">\(\boldsymbol\theta\)</span> does
+not contain <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(\sigma^2_\varepsilon\)</span>. The derivatives are
+now <span class="math display">\[
+\begin{aligned}
+\frac{\partial \ell}{\partial \sigma} &amp;=
+\sigma\sum_{t=1}^n (r^{(2)}_t r^{(2)}_t - n^{(22)}_t) -
+\sigma\lambda\sum_{t=1}^n (e_t e_t - d_t) \\
+\frac{\partial \ell}{\partial \gamma} &amp;= \gamma\sum_{t=1}^n
+(r^{(2)}_t r^{(2)}_t - n^{(22)}_t )\sigma_t\\
+\frac{\partial \ell}{\partial \sigma_t} &amp;=
+\Big(r^{(1)}_t r^{(1)}_t - n^{(11)}_t + (r^{(2)}_t r^{(2)}_t -
+n^{(22)}_t)\gamma^2\Big)\sigma^2_t
+\end{aligned}
+\]</span> The derivatives of the constraining function are <span class="math display">\[
+\frac{\partial g}{\partial\sigma} = 0, \;
+\frac{\partial g}{\partial\gamma} = 0, \;
+\frac{\partial g}{\partial\sigma_t} = 1.
+\]</span></p>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
