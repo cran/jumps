@@ -1,11 +1,41 @@
+citHeader("To cite the jumps package in publications use:")
+
 bibentry(
   bibtype  = "Article",
-  title    = "A Hodrick-Prescott filter with automatically selected jumps",
-  author   = "Maranzano P. and Pelagatti M.",
-  journal  = "FEEM Working Paper",
+  title    = "A Hodrick-Prescott filter with automatically selected breaks",
+  author   = c(person("Paolo", "Maranzano"),
+               person("Matteo", "Pelagatti")),
+  journal  = "Economic Modelling",
+  year     = "2025",
+  volume   = "150",
+  pages    = "107132",
+  issn     = "0264-9993",
+  doi      = "10.1016/j.econmod.2025.107132",
+  header   = "The Hodrick-Prescott filter with jumps (hpj, hpfj, hpfj_fix, hpfjx) implements:"
+)
+
+bibentry(
+  bibtype  = "Misc",
+  title    = "Smoothing splines with some discontinuities",
+  author   = c(person("Matteo", "Pelagatti"),
+               person("Paolo", "Maranzano"),
+               person(c("Giulio", "Cesare"), "Gatto Ronchieri")),
+  year     = "2026",
+  note     = "arXiv preprint arXiv:2610.33137",
+  doi      = "10.48550/arXiv.2610.33137",
+  header   = "The smoothing splines with discontinuities obtained by time warping (ssj_mle, ssj_kfs, ssj_atw, ssj_fix and their auto_* wrappers) implement:"
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Smoothing splines for discontinuous signals",
+  author   = c(person("Martin", "Storath"),
+               person("Andreas", "Weinmann")),
+  journal  = "Journal of Computational and Graphical Statistics",
   year     = "2024",
-  volume   = "18",
-  number   = "2024",
-  pages    = "1--48",
-  doi      = "10.2139/ssrn.4896170"
+  volume   = "33",
+  number   = "2",
+  pages    = "651--664",
+  doi      = "10.1080/10618600.2023.2262000",
+  header   = "The cubic smoothing splines with discontinuities (ssj_cssd, ssj_cssd_dp, auto_ssj_cssd, predict_cssd_dp) implement:"
 )
